@@ -4,6 +4,8 @@ export default class MyGrid {
 		this.text_elements = $('.this-item .text');
 		this.wrapper = $('.this-wrapper');
 		this.settings = settings;
+		this.elMargin;
+		this.rowMargin;
 		this.quantity;
 	}
 	myStart() {
@@ -24,6 +26,8 @@ function resizing(width = $(window).width(), quantity) {
 			break;
 		} else {
 			this.quantity = this.settings.quantityRowElements;
+			this.elMargin = this.settings.elementGap;
+			this.rowMargin = this.settings.rowGap;
 		}
 	}
 	inicialization.call(this);
@@ -39,7 +43,7 @@ function inicialization() {
 	for (let i = 0; i < this.img_elements.length / this.quantity; i++) {
 		$(`.this-wrapper`).append(`<div class="my-row row${i}"></div>`);
 		if (i !== this.img_elements.length / this.quantity - 1) {
-			$(`.my-row`).eq(i).css({ 'margin-bottom': this.settings.rowGap });
+			$(`.my-row`).eq(i).css({ 'margin-bottom': this.rowMargin });
 		}
 
 		for (let i2 = l; i2 < l2; i2++) {
@@ -53,8 +57,11 @@ function inicialization() {
 									</div>
 								</div>`);
 			if (i2 !== l2 - 1) {
-				$(`.my-item`).eq(i2).css({ 'margin-right': this.settings.elementGap });
+				$(`.my-item`).eq(i2).css({ 'margin-right': this.elMargin });
 			}
+			var elementWidth = ($('.this-wrapper').outerWidth() - Number(this.elMargin.slice(0, -2) * (this.quantity - 1))) / this.quantity;
+			
+			$(`.my-item`).css({ 'width': `${elementWidth}px`, 'display': 'inline-block' });
 			
 			$('.my-container')[i2].append(this.img_elements[i2]);
 			$('.i-el')[i2].append(this.text_elements[i2]);
